@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_layout"/>
+        layout="@layout/toolbar_layout" />
 
     <CalendarView
         android:id="@+id/calendarView"
@@ -17,7 +18,18 @@
         android:dateTextAppearance="@style/CalenderViewDateCustomText"
         android:theme="@style/CalenderViewCustom"
         android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+        android:weekSeparatorLineColor="@color/black"
+        android:unfocusedMonthDateColor="@color/black"
         />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="400dp"
+        app:cardBackgroundColor="@color/finGray"
+        app:layout_constraintBottom_toBottomOf="@id/calendarView"
+        app:layout_constraintEnd_toEndOf="@id/calendarView" />
 
 
 </RelativeLayout>

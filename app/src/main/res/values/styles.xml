@@ -3,7 +3,7 @@
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
         <item name="colorAccent">#3399ff</item>
         <item name="colorPrimary">@android:color/darker_gray</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
     </style>
 
     <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
