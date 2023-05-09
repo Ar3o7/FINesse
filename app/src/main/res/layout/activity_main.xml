@@ -6,15 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_layout" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/finPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:navigationIcon="@drawable/burger" />
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/my_toolbar"
         android:dateTextAppearance="@style/CalenderViewDateCustomText"
         android:theme="@style/CalenderViewCustom"
         android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
@@ -25,7 +30,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/my_toolbar"
         android:layout_marginTop="350dp"
         android:layout_marginHorizontal="30dp"
         app:cardBackgroundColor="@color/finPrimary"
@@ -83,7 +88,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/my_toolbar"
         android:layout_marginTop="500dp"
         android:layout_marginHorizontal="30dp"
         app:cardBackgroundColor="@color/finPrimary"
@@ -104,17 +109,6 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"/>
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:progressTint="#D31A1A" />
-
-        </RelativeLayout>
+                    </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>
