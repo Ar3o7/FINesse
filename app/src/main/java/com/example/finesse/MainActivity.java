@@ -42,10 +42,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         password = findViewById(R.id.password);
         loginButton = findViewById(R.id.loginButton);
 
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (username.getText().toString().equals("user") && password.getText().toString().equals("pass")) {
+
+                String user = username.getText().toString();
+                String pass = password.getText().toString();
+
+                if (user.equals("admin") && pass.equals("admin")) {
                     Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                     //setContentView(R.layout.fragment_home);
 
