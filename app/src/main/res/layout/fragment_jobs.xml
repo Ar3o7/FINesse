@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:id="@id/text"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="260dp"
         android:layout_marginTop="50dp"
         android:layout_marginHorizontal="30dp"
         app:cardBackgroundColor="@color/finPrimary"
@@ -28,15 +28,15 @@
                 android:text="Current job"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
+
             <TextView
                 android:id="@id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="40dp"
-                android:text=""
+                android:layout_marginTop="50dp"
+                android:text="Name"
                 android:textColor="@color/green"
                 android:textSize="18sp" />
 
@@ -44,12 +44,80 @@
                 android:id="@id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="40dp"
-                android:layout_marginTop="40dp"
-                android:text="History"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="80dp"
+                android:text="H_rate"
                 android:textColor="@color/red"
                 android:textSize="18sp"/>
+
+            <TextView
+                android:id="@id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="80dp"
+                android:text="H_day"
+                android:textColor="@color/red"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="120dp"
+                android:text="D_week"
+                android:textColor="@color/red"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="120dp"
+                android:text="H_day"
+                android:textColor="@color/red"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="160dp"
+                android:text="Date_start"
+                android:textColor="@color/red"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="160dp"
+                android:text="date_end"
+                android:textColor="@color/red"
+                android:textSize="18sp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@id/text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="200dp"
+                android:layout_marginHorizontal="30dp"
+                app:cardBackgroundColor="@color/green">
+
+
+            </androidx.cardview.widget.CardView>
+
+
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
