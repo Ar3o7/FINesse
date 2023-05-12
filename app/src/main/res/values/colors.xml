@@ -11,4 +11,5 @@
     <color name="green">#00cc00</color>
     <color name="red">#e62e00</color>
     <color name="finSecondary">#3399ff</color>
+    <color name="finTertiary">#bfbfc0</color>
 </resources>
