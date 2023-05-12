@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+                setContentView(R.layout.fragment_home);
                 break;
 
             case R.id.nav_bills:
