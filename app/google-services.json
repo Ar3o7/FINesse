@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "224004766666",
+    "project_id": "jsu-tim2",
+    "storage_bucket": "jsu-tim2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224004766666:android:54200c4c363a7fe10c2d33",
+        "android_client_info": {
+          "package_name": "com.example.finesse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "224004766666-3f22a37n2oe30fd26mrs55mn7b79kjt6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9B5-lnPmMv8xrSB8s1Ycm3-Z0Oh4oToA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "224004766666-3f22a37n2oe30fd26mrs55mn7b79kjt6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
