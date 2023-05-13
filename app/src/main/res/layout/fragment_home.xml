@@ -34,7 +34,6 @@
                 android:id="@id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="20dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
@@ -42,7 +41,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"/>
             <TextView
-                android:id="@id/text"
+                android:id="@+id/textEstimateIncome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -54,7 +53,7 @@
                 android:textSize="18sp"/>
 
             <TextView
-                android:id="@id/text"
+                android:id="@+id/textExpenseTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -65,7 +64,7 @@
 
 
             <TextView
-                android:id="@id/text"
+                android:id="@+id/textTotalEstimate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -102,16 +101,6 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"/>
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:progressTint="#D31A1A" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
