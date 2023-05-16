@@ -17,4 +17,5 @@ public class BillsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bills, container, false);
     }
+    // TODO do the same thing you did with jobs
 }
