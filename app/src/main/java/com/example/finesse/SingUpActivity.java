@@ -2,6 +2,7 @@ package com.example.finesse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -72,4 +73,9 @@ public class SingUpActivity extends AppCompatActivity {
             }
         });
     }
-}
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        }
+    }
