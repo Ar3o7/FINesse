@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/loginbkg"
+    android:background="@drawable/background_image"
     tools:context=".AddJobActivity">
 
     <androidx.cardview.widget.CardView
@@ -99,7 +99,7 @@
                 android:textColorHighlight="@color/cardview_dark_background"
                 android:layout_marginTop="40dp" />
 
-            <EditText
+            <DatePicker
                 android:id="@+id/job_dateStart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

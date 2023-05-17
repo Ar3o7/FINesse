@@ -18,7 +18,7 @@
         <item
             android:id="@+id/nav_bills"
             android:icon="@drawable/bills"
-            android:title="Bills"/>
+            android:title="Expenses"/>
     </group>
 
     <item android:title="">

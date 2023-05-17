@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 public class AddJobActivity extends AppCompatActivity {
@@ -13,7 +14,7 @@ public class AddJobActivity extends AppCompatActivity {
     private EditText jobHoursRateEditText;
     private EditText jobHoursDayEditText;
     private EditText jobDayWeekEditText;
-    private EditText jobDateStartEditText;
+    private DatePicker jobDateStartEditText;
     private EditText jobDateEndEditText;
     private EditText jobBonusEditText;
 
@@ -44,9 +45,10 @@ public class AddJobActivity extends AppCompatActivity {
         String hoursDayRate = jobHoursRateEditText.getText().toString();
         String hoursPerDay = jobHoursDayEditText.getText().toString();
         String daysPerWeek = jobDayWeekEditText.getText().toString();
-        String dateStart = jobDateStartEditText.getText().toString();
+        String dateStart = jobDateStartEditText.toString();
         String dateEnd = jobDateEndEditText.getText().toString();
         String bonus = jobBonusEditText.getText().toString();
+
 
         // TODO: Add code here to save the job to your data source
 

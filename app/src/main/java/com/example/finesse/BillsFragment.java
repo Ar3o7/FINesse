@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -29,13 +30,10 @@ public class BillsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_bills, container, false);
-
         View addBillButton = view.findViewById(R.id.ButtonAddExpenses);
         addBillButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                addExpense();
-            }
+            public void onClick(View v) { addExpense(); }
         });
 
         View historyButton = view.findViewById(R.id.ButtonHistoryExpenses);
@@ -47,7 +45,14 @@ public class BillsFragment extends Fragment {
             }
         });
 
+        View manageExpensesButton = view.findViewById(R.id.ButtonManageExpenses);
+        manageExpensesButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {manageExpenses();}
+        });
+
         return view;
+
     }
 
     private static final String PREFS_NAME = "expenses";
@@ -63,6 +68,7 @@ public class BillsFragment extends Fragment {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 EditText expenseName = dialogView.findViewById(R.id.expense_name);
                 String name = expenseName.getText().toString();
 
@@ -81,12 +87,12 @@ public class BillsFragment extends Fragment {
                 TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
                 recentExpense.setText(name + " " + amount + " " + recurring);
 
-
             }
         });
-        builder.setNegativeButton("Cancel", null);
 
+        builder.setNegativeButton("Cancel", null);
         builder.show();
+
         }
 
     private void showHistory() {
@@ -109,5 +115,26 @@ public class BillsFragment extends Fragment {
 
         builder.show();
 
+    }
+
+    private void manageExpenses() {
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View dialogView = inflater.inflate(R.layout.dialog_manage_expenses, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+        builder.setTitle("Manage Expenses");
+
+        builder.setNegativeButton("Cancel", null);
+        ListView listView = dialogView.findViewById(R.id.expenses_list_view);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
+        listView.setAdapter(adapter);
+
+        SharedPreferences prefs = getContext().getSharedPreferences(PREFS_NAME, getContext().MODE_PRIVATE);
+        Set<String> expenses = prefs.getStringSet(PREFS_KEY, new HashSet<String>());
+        adapter.addAll(expenses);
+
+        builder.show();
     }
 }
