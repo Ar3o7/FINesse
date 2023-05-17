@@ -134,7 +134,41 @@ public class BillsFragment extends Fragment {
         SharedPreferences prefs = getContext().getSharedPreferences(PREFS_NAME, getContext().MODE_PRIVATE);
         Set<String> expenses = prefs.getStringSet(PREFS_KEY, new HashSet<String>());
         adapter.addAll(expenses);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String expense = adapter.getItem(position);
 
-        builder.show();
-    }
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Edit or Delete Expense");
+                builder.setMessage("Do you want to edit or delete this expense?");
+                builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        expenses.remove(expense);
+
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putStringSet(PREFS_KEY, expenses);
+                        editor.apply();
+
+                        adapter.remove(expense);
+                        adapter.notifyDataSetChanged();
+
+                        TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
+                        if (expense.equals(recentExpense.getText().toString())) {
+                            recentExpense.setText("No Expenses Yet");
+                            // TODO: When the most recent expense is deleted, make the TextView show the next most recent expense
+                        }
+                    }
+                    });
+                    builder.show();
+                }
+            });
+            builder.show();
+        }
 }
