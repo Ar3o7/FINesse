@@ -62,6 +62,7 @@ public class AddJobActivity extends AppCompatActivity {
         String dateEnd = jobDateEndEditText.getText().toString();
         String bonus = jobBonusEditText.getText().toString();
         String user = currentFirebaseUser.getUid();
+        //TODO: NOA OVAJ KALENDAR JE FUCKING ODVRATAN
         // TODO: NOA NADI NACIN DA NIJE SVE STRING JER KUZIS BROJEVI
         Map<String,Object> job = new HashMap<>();
         job.put("job name",name);
