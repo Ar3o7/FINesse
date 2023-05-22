@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class AddJobActivity extends AppCompatActivity {
     private EditText jobHoursRateEditText;
     private EditText jobHoursDayEditText;
     private EditText jobDayWeekEditText;
-    private DatePicker jobDateStartEditText;
+    private EditText jobDateStartEditText;
     private EditText jobDateEndEditText;
     private EditText jobBonusEditText;
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
@@ -62,7 +63,6 @@ public class AddJobActivity extends AppCompatActivity {
         String dateEnd = jobDateEndEditText.getText().toString();
         String bonus = jobBonusEditText.getText().toString();
         String user = currentFirebaseUser.getUid();
-        //TODO: NOA OVAJ KALENDAR JE FUCKING ODVRATAN
         // TODO: NOA NADI NACIN DA NIJE SVE STRING JER KUZIS BROJEVI
         Map<String,Object> job = new HashMap<>();
         job.put("job name",name);
