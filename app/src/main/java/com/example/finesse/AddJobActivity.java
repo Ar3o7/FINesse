@@ -3,6 +3,7 @@ package com.example.finesse;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +18,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class AddJobActivity extends AppCompatActivity {
@@ -45,6 +49,33 @@ public class AddJobActivity extends AppCompatActivity {
         jobDateStartEditText = findViewById(R.id.job_dateStart);
         jobDateEndEditText = findViewById(R.id.job_dateEnd);
         jobBonusEditText = findViewById(R.id.job_bonus);
+
+        final Calendar calendar = Calendar.getInstance();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+        jobDateStartEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int year = calendar.get(Calendar.YEAR);
+                int month  = calendar.get(Calendar.MONTH);
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddJobActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month , int dayOfMonth) {
+                        calendar.set(year,month,dayOfMonth);
+                        String dateStart = dateFormat.format(calendar.getTime());
+                        jobDateStartEditText.setText(dateStart);
+
+                        calendar.add(Calendar.DAY_OF_MONTH, month == Calendar.FEBRUARY ? 28 : 30);
+                        String dateEnd = dateFormat.format(calendar.getTime());
+                        jobDateEndEditText.setText(dateEnd);
+                    }
+                },year,month,dayOfMonth);
+                datePickerDialog.show();
+            }
+        });
+
         Button addJobButton = findViewById(R.id.add_job_button);
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,14 +87,18 @@ public class AddJobActivity extends AppCompatActivity {
 
     private void addJob() {
         String name = jobNameEditText.getText().toString();
-        String hoursDayRate = jobHoursRateEditText.getText().toString();
-        String hoursPerDay = jobHoursDayEditText.getText().toString();
-        String daysPerWeek = jobDayWeekEditText.getText().toString();
+        Double hoursDayRate = Double.parseDouble(jobHoursRateEditText.getText().toString());
+        Integer hoursPerDay = Integer.parseInt(jobHoursDayEditText.getText().toString());
+        Integer daysPerWeek = Integer.parseInt(jobDayWeekEditText.getText().toString());
         String dateStart = jobDateStartEditText.toString();
         String dateEnd = jobDateEndEditText.getText().toString();
-        String bonus = jobBonusEditText.getText().toString();
+        Double bonus = Double.parseDouble(jobBonusEditText.getText().toString());
         String user = currentFirebaseUser.getUid();
-        // TODO: NOA NADI NACIN DA NIJE SVE STRING JER KUZIS BROJEVI
+
+        // TODO: Add validation to check if all fields are filled in
+        // TODO: Promijeni end date u TextView tako da ga korisnik ne moze editat
+        // NOTE: kad kliknes da pickas date, pojavi se tastatura, pretp radi toga sto je edit text
+
         Map<String,Object> job = new HashMap<>();
         job.put("job name",name);
         job.put("hourly rate",hoursDayRate);

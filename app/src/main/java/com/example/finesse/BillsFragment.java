@@ -38,6 +38,8 @@ public class BillsFragment extends Fragment {
 
         View historyButton = view.findViewById(R.id.ButtonHistoryExpenses);
 
+        // Maybe remove the Manage Expenses button, nemogu to prokljuvit
+
         historyButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
