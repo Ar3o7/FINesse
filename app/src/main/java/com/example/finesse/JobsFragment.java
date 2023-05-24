@@ -34,7 +34,7 @@ public class JobsFragment extends Fragment {
     private Button addJobButton;
     TextView textJobName,textH_rate,textH_day,textD_week,textBonus,textDate_start,textDate_end;
 
-    String name, dateStart, hoursDayRate, dateEnd, bonus, hoursPerDay, daysPerWeek ;
+    String name, dateStart, hoursRate, dateEnd, bonus, hoursPerDay, daysPerWeek ;
 
 
 
@@ -57,6 +57,8 @@ public class JobsFragment extends Fragment {
         String user = currentFirebaseUser.getUid();
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
+
+        //TODO: treba sredit da nekako uzima najnoviji poso
         jobs.document("lord d.o.o").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -65,7 +67,7 @@ public class JobsFragment extends Fragment {
                     if(documentSnapshot != null && documentSnapshot.exists()){
 
                         name = documentSnapshot.getString("job name");
-                        hoursDayRate = documentSnapshot.getString("hourly rate");
+                        hoursRate = documentSnapshot.getString("hourly rate");
                         hoursPerDay = documentSnapshot.getString("hours per day");
                         daysPerWeek = documentSnapshot.getString("days per week");
                         dateStart = documentSnapshot.getString("date start");
@@ -73,7 +75,7 @@ public class JobsFragment extends Fragment {
                         bonus = documentSnapshot.getString("bonus");
 
                         textJobName.setText(name);
-                        textH_rate.setText(hoursDayRate);
+                        textH_rate.setText(hoursRate);
                         textH_day.setText(hoursPerDay);
                         textD_week.setText(daysPerWeek);
                         textBonus.setText(bonus);
