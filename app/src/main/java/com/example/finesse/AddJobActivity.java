@@ -90,7 +90,7 @@ public class AddJobActivity extends AppCompatActivity {
         Double hoursDayRate = Double.parseDouble(jobHoursRateEditText.getText().toString());
         Integer hoursPerDay = Integer.parseInt(jobHoursDayEditText.getText().toString());
         Integer daysPerWeek = Integer.parseInt(jobDayWeekEditText.getText().toString());
-        String dateStart = jobDateStartEditText.toString();
+        String dateStart = jobDateStartEditText.getText().toString();
         String dateEnd = jobDateEndEditText.getText().toString();
         Double bonus = Double.parseDouble(jobBonusEditText.getText().toString());
         String user = currentFirebaseUser.getUid();
@@ -100,9 +100,6 @@ public class AddJobActivity extends AppCompatActivity {
         // TODO: Promijeni end date u TextView tako da ga korisnik ne moze editat
 
         //TODO: nisi me bas skuzio moras pormjenit da u pozicijama di se trazi broj samo mozes broj upisat
-
-        //TODO: koji kurac je ovo? androidx.appcompat.widget.AppCompatEditText{f810604 VFED..CL. .F...... 66,1309-539,1420 #7f0800fa app:id/job_dateStart aid=1073741830}
-        // to dobijem u bazi za start date???? ali date end je dobar????
 
         // NOTE: kad kliknes da pickas date, pojavi se tastatura, pretp radi toga sto je edit text
 
