@@ -1,7 +1,6 @@
 package com.example.finesse;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +17,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class BillsFragment extends Fragment {
+
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
     @Override
@@ -31,6 +38,10 @@ public class BillsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_bills, container, false);
         View addBillButton = view.findViewById(R.id.ButtonAddExpenses);
+
+        String user = currentFirebaseUser.getUid();
+        CollectionReference expenses = db.collection("users").document(user).collection("expenses");
+
         addBillButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) { addExpense(); }
@@ -55,12 +66,12 @@ public class BillsFragment extends Fragment {
 
         return view;
 
+
+
     }
 
-    private static final String PREFS_NAME = "expenses";
-    private static final String PREFS_KEY = "expenses_key";
-
     private void addExpense() {
+
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogView = inflater.inflate(R.layout.dialog_add_expense, null);
 
@@ -71,23 +82,27 @@ public class BillsFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                String user = currentFirebaseUser.getUid();
+                CollectionReference expenses = db.collection("users").document(user).collection("expenses");
+
                 EditText expenseName = dialogView.findViewById(R.id.expense_name);
                 String name = expenseName.getText().toString();
 
                 EditText expenseAmount = dialogView.findViewById(R.id.expense_price);
                 String amount = expenseAmount.getText().toString();
-                double price = Double.parseDouble(amount);
 
                 CheckBox expenseRecurring = dialogView.findViewById(R.id.expense_recurrence);
                 boolean recurring = expenseRecurring.isChecked();
 
-                SharedPreferences prefs = getContext().getSharedPreferences(PREFS_NAME, getContext().MODE_PRIVATE);
-                Set<String> expenses = prefs.getStringSet(PREFS_KEY, new HashSet<String>());
-                expenses.add(name + " " + amount + " " + recurring);
-                prefs.edit().putStringSet(PREFS_KEY, expenses).apply();
-
                 TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
                 recentExpense.setText(name + " " + amount + " " + recurring);
+
+                Map<String, Object> expense = new HashMap<>();
+                expense.put("name", name);
+                expense.put("amount", amount);
+                expense.put("recurring", recurring);
+
+                expenses.document(name).set(expense);
 
             }
         });
@@ -98,6 +113,10 @@ public class BillsFragment extends Fragment {
         }
 
     private void showHistory() {
+
+        String user = currentFirebaseUser.getUid();
+        CollectionReference expenses = db.collection("users").document(user).collection("expenses");
+
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogView = inflater.inflate(R.layout.dialog_history_expense, null);
 
@@ -111,15 +130,24 @@ public class BillsFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
         listView.setAdapter(adapter);
 
-        SharedPreferences prefs = getContext().getSharedPreferences(PREFS_NAME, getContext().MODE_PRIVATE);
-        Set<String> expenses = prefs.getStringSet(PREFS_KEY, new HashSet<String>());
-        adapter.addAll(expenses);
+        expenses.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (int i = 0; i < task.getResult().size(); i++) {
+                    adapter.add(task.getResult().getDocuments().get(i).get("name").toString() + " " + task.getResult().getDocuments().get(i).get("amount").toString() + " " + task.getResult().getDocuments().get(i).get("recurring").toString());
+                }
+            }
+        });
+
 
         builder.show();
 
     }
 
     private void manageExpenses() {
+
+        String user = currentFirebaseUser.getUid();
+        CollectionReference expenses = db.collection("users").document(user).collection("expenses");
+
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogView = inflater.inflate(R.layout.dialog_manage_expenses, null);
 
@@ -133,9 +161,14 @@ public class BillsFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
         listView.setAdapter(adapter);
 
-        SharedPreferences prefs = getContext().getSharedPreferences(PREFS_NAME, getContext().MODE_PRIVATE);
-        Set<String> expenses = prefs.getStringSet(PREFS_KEY, new HashSet<String>());
-        adapter.addAll(expenses);
+        expenses.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (int i = 0; i < task.getResult().size(); i++) {
+                    adapter.add(task.getResult().getDocuments().get(i).get("name").toString() + " " + task.getResult().getDocuments().get(i).get("amount").toString() + " " + task.getResult().getDocuments().get(i).get("recurring").toString());
+                }
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -152,11 +185,6 @@ public class BillsFragment extends Fragment {
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        expenses.remove(expense);
-
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putStringSet(PREFS_KEY, expenses);
-                        editor.apply();
 
                         adapter.remove(expense);
                         adapter.notifyDataSetChanged();
@@ -164,7 +192,6 @@ public class BillsFragment extends Fragment {
                         TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
                         if (expense.equals(recentExpense.getText().toString())) {
                             recentExpense.setText("No Expenses Yet");
-                            // TODO: When the most recent expense is deleted, make the TextView show the next most recent expense
                             //TODO: Aplikacija se ruši ako ne stavis cjenu za expanse nije problem ali ono
                         }
                     }
