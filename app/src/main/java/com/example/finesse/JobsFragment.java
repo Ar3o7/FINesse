@@ -45,13 +45,7 @@ public class JobsFragment extends Fragment {
         textDate_end = view.findViewById(R.id.textDate_end);
         String user = currentFirebaseUser.getUid();
 
-        DocumentReference documentReference = db.collection("users").document(user).collection("jobs").document();
-        documentReference.addSnapshotListener(JobsFragment.super.getActivity(), new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
-            }
-        });
 
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
