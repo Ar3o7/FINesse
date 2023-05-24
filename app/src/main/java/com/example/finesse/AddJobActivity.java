@@ -15,11 +15,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -102,6 +104,9 @@ public class AddJobActivity extends AppCompatActivity {
         //TODO: nisi me bas skuzio moras pormjenit da u pozicijama di se trazi broj samo mozes broj upisat
 
         // NOTE: kad kliknes da pickas date, pojavi se tastatura, pretp radi toga sto je edit text
+        //NOTE: gle ja nmg birat nista nego upisat tako da idk what you talking about...
+        //NOTE: Okay skuzio sam nakon sto sam probo duplo kliknut i uspilo je. tehnički mozes stavit
+        //da je button ili da text thingy nije edditable mozda bi to radilo.
 
 
 
@@ -114,22 +119,12 @@ public class AddJobActivity extends AppCompatActivity {
         job.put("date end",dateEnd);
         job.put("bonus",bonus);
 
-
-        db.collection("users").document(user).collection("jobs").add(job)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(AddJobActivity.this, "Successful", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AddJobActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        CollectionReference jobs = db.collection("users").document(user).collection("jobs");
+        jobs.document(name).set(job);
 
 
-        // TODO: Find a way to send date created to firebase so we know what job is current
+
+
 
         finish();
     }
