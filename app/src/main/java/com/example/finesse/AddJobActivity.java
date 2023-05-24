@@ -89,12 +89,12 @@ public class AddJobActivity extends AppCompatActivity {
 
     private void addJob() {
         String name = jobNameEditText.getText().toString();
-        Double hoursDayRate = Double.parseDouble(jobHoursRateEditText.getText().toString());
-        Integer hoursPerDay = Integer.parseInt(jobHoursDayEditText.getText().toString());
-        Integer daysPerWeek = Integer.parseInt(jobDayWeekEditText.getText().toString());
+        String hoursDayRate = jobHoursRateEditText.getText().toString();
+        String hoursPerDay = jobHoursDayEditText.getText().toString();
+        String daysPerWeek = jobDayWeekEditText.getText().toString();
         String dateStart = jobDateStartEditText.getText().toString();
         String dateEnd = jobDateEndEditText.getText().toString();
-        Double bonus = Double.parseDouble(jobBonusEditText.getText().toString());
+        String bonus = jobBonusEditText.getText().toString();
         String user = currentFirebaseUser.getUid();
 
         // TODO: Add validation to check if all fields are filled in
