@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,8 +34,8 @@ public class AddJobActivity extends AppCompatActivity {
     private EditText jobHoursRateEditText;
     private EditText jobHoursDayEditText;
     private EditText jobDayWeekEditText;
-    private EditText jobDateStartEditText;
-    private EditText jobDateEndEditText;
+    private Button jobDateStartEditText;
+    private TextView jobDateEndEditText;
     private EditText jobBonusEditText;
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -48,8 +49,8 @@ public class AddJobActivity extends AppCompatActivity {
         jobHoursRateEditText = findViewById(R.id.job_hrate);
         jobHoursDayEditText = findViewById(R.id.job_hday);
         jobDayWeekEditText = findViewById(R.id.job_dweek);
-        jobDateStartEditText = findViewById(R.id.job_dateStart);
-        jobDateEndEditText = findViewById(R.id.job_dateEnd);
+        jobDateStartEditText = (Button) findViewById(R.id.job_dateStart);
+        jobDateEndEditText = (TextView) findViewById(R.id.job_dateEnd);
         jobBonusEditText = findViewById(R.id.job_bonus);
 
         final Calendar calendar = Calendar.getInstance();
@@ -69,7 +70,7 @@ public class AddJobActivity extends AppCompatActivity {
                         String dateStart = dateFormat.format(calendar.getTime());
                         jobDateStartEditText.setText(dateStart);
 
-                        calendar.add(Calendar.DAY_OF_MONTH, month == Calendar.FEBRUARY ? 28 : 30);
+                        calendar.add(Calendar.DAY_OF_MONTH, month == Calendar.FEBRUARY ? 28 : 29);
                         String dateEnd = dateFormat.format(calendar.getTime());
                         jobDateEndEditText.setText(dateEnd);
                     }
@@ -108,8 +109,6 @@ public class AddJobActivity extends AppCompatActivity {
         //NOTE: Okay skuzio sam nakon sto sam probo duplo kliknut i uspilo je. tehnički mozes stavit
         //da je button ili da text thingy nije edditable mozda bi to radilo.
 
-
-
         Map<String,Object> job = new HashMap<>();
         job.put("job name",name);
         job.put("hourly rate",hoursDayRate);
@@ -121,10 +120,6 @@ public class AddJobActivity extends AppCompatActivity {
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
         jobs.document(name).set(job);
-
-
-
-
 
         finish();
     }
