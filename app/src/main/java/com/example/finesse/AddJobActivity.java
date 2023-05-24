@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -118,6 +119,9 @@ public class AddJobActivity extends AppCompatActivity {
         job.put("date start",dateStart);
         job.put("date end",dateEnd);
         job.put("bonus",bonus);
+        job.put("active","true");
+
+
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
         jobs.document(name).set(job);
