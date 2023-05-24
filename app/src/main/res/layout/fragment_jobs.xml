@@ -28,83 +28,76 @@
                 android:layout_marginTop="20dp"
                 android:text="Current job"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textJobName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="50dp"
-                android:text="Name"
-                android:textColor="@color/green"
+                android:text="name:"
+                android:textColor="@color/finSecondary"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textH_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="40dp"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="80dp"
-                android:text="H_rate"
-                android:textColor="@color/red"
+                android:text="Hourly rate: "
+                android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/textH_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="40dp"
-                android:layout_marginTop="80dp"
-                android:text="H_day"
-                android:textColor="@color/red"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120dp"
+                android:text="Hours per day: "
+                android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/textD_week"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="120dp"
-                android:text="D_week"
-                android:textColor="@color/red"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="160dp"
+                android:text="Days per week: "
+                android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/textBonus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="40dp"
-                android:layout_marginTop="120dp"
-                android:text="bonus"
-                android:textColor="@color/red"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="200dp"
+                android:text="bonus: "
+                android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/textDate_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="160dp"
-                android:text="Date_start"
-                android:textColor="@color/red"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="240dp"
+                android:text="Date started: "
+                android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/textDate_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="40dp"
-                android:layout_marginTop="160dp"
-                android:text="date_end"
-                android:textColor="@color/red"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="280dp"
+                android:text="date to end: "
+                android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
 
@@ -136,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:backgroundTint="@color/finSecondary"
-            android:text="History"
+            android:text="Manage "
             android:textColor="@color/black"
             android:textSize="18sp" />
 

@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment{
                         bonus = Double.parseDouble(documentSnapshot.getString("bonus"));
 
                         FinEstimateIncome = hoursRate * hoursPerDay * daysPerWeek * 4;
-                        textEstimateIncome.setText(FinEstimateIncome.toString());
+                        textEstimateIncome.setText("Estimated total: " + FinEstimateIncome.toString() + "€");
 
                         //TODO: treba napravit sad i za expences i onda za tota
 

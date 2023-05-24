@@ -165,6 +165,7 @@ public class BillsFragment extends Fragment {
                         if (expense.equals(recentExpense.getText().toString())) {
                             recentExpense.setText("No Expenses Yet");
                             // TODO: When the most recent expense is deleted, make the TextView show the next most recent expense
+                            //TODO: Aplikacija se ruši ako ne stavis cjenu za expanse nije problem ali ono
                         }
                     }
                     });

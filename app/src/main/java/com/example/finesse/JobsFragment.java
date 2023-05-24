@@ -74,13 +74,13 @@ public class JobsFragment extends Fragment {
                         dateEnd = documentSnapshot.getString("date end");
                         bonus = documentSnapshot.getString("bonus");
 
-                        textJobName.setText(name);
-                        textH_rate.setText(hoursRate);
-                        textH_day.setText(hoursPerDay);
-                        textD_week.setText(daysPerWeek);
-                        textBonus.setText(bonus);
-                        textDate_start.setText(dateStart);
-                        textDate_end.setText(dateEnd);
+                        textJobName.setText("name: " + name);
+                        textH_rate.setText("Hourly rate: " + hoursRate + "€");
+                        textH_day.setText("Hours per day: " + hoursPerDay);
+                        textD_week.setText("Days per week: " + daysPerWeek);
+                        textBonus.setText("bonus: " + bonus);
+                        textDate_start.setText("Date started: " + dateStart);
+                        textDate_end.setText("date to end: " + dateEnd);
                     }
                 }
             }
