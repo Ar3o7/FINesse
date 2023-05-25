@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment{
                     }
 
                 }
-                if(total != null){
+                if(total != null && FinEstimateIncome !=null){
                     decfor.format(total);
                     textExpenseTotal.setText("Estimated expenses: " + total.toString() + "€");
                     est = FinEstimateIncome - total;
