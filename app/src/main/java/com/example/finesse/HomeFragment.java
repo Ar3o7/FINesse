@@ -35,9 +35,9 @@ public class HomeFragment extends Fragment{
     Integer hoursPerDay, daysPerWeek ;
     String name, dateStart, dateEnd;
 
-    Double hoursRate, bonus, FinEstimateIncome, total, est;
+    public Double hoursRate, bonus, FinEstimateIncome, total, est;
 
-    private static final DecimalFormat decfor = new DecimalFormat("0.00");
+
 
     //TODO: treba dodat nacin da aplikacija zna koliko je dana izmedu start i end da moze racunat kako treba, trenutno je na mjesec dana
 
@@ -65,7 +65,6 @@ public class HomeFragment extends Fragment{
                 dateEnd = task.getResult().getDocuments().get(0).get("date end").toString();
                 bonus = Double.parseDouble(task.getResult().getDocuments().get(0).get("bonus").toString());
                 FinEstimateIncome = hoursRate * hoursPerDay * daysPerWeek * 4;
-                decfor.format(FinEstimateIncome);
                 textEstimateIncome.setText("Estimated income: " + FinEstimateIncome.toString() + "€");
                 //TODO fix the 892.80000000000000001 euro glitch
             } else {
@@ -89,10 +88,8 @@ public class HomeFragment extends Fragment{
 
                 }
                 if(total != null && FinEstimateIncome !=null){
-                    decfor.format(total);
                     textExpenseTotal.setText("Estimated expenses: " + total.toString() + "€");
                     est = FinEstimateIncome - total;
-                    decfor.format(est);
                     textTotalEst.setText("Estimated total: " + est.toString() + "€");
                 }else{
                     textExpenseTotal.setText("No expense yet");
