@@ -109,18 +109,24 @@ public class AddJobActivity extends AppCompatActivity {
         //NOTE: Okay skuzio sam nakon sto sam probo duplo kliknut i uspilo je. tehnički mozes stavit
         //da je button ili da text thingy nije edditable mozda bi to radilo.
 
-        Map<String,Object> job = new HashMap<>();
-        job.put("job name",name);
-        job.put("hourly rate",hoursDayRate);
-        job.put("hours per day",hoursPerDay);
-        job.put("days per week",daysPerWeek);
-        job.put("date start",dateStart);
-        job.put("date end",dateEnd);
-        job.put("bonus",bonus);
+        if (!name.isEmpty() && !hoursDayRate.isEmpty() && !hoursPerDay.isEmpty() && !daysPerWeek.isEmpty() && !dateStart.isEmpty() && !dateEnd.isEmpty()) {
 
-        CollectionReference jobs = db.collection("users").document(user).collection("jobs");
-        jobs.document(name).set(job);
+            Map<String, Object> job = new HashMap<>();
+            job.put("job name", name);
+            job.put("hourly rate", hoursDayRate);
+            job.put("hours per day", hoursPerDay);
+            job.put("days per week", daysPerWeek);
+            job.put("date start", dateStart);
+            job.put("date end", dateEnd);
+            job.put("bonus", bonus);
 
-        finish();
+
+            CollectionReference jobs = db.collection("users").document(user).collection("jobs");
+            jobs.document(name).set(job);
+
+            finish();
+        } else {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        }
     }
 }

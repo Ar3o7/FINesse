@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,10 +21,17 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import kotlin.collections.ArrayDeque;
 
 
 public class BillsFragment extends Fragment {
@@ -47,17 +55,6 @@ public class BillsFragment extends Fragment {
             public void onClick(View v) { addExpense(); }
         });
 
-        View historyButton = view.findViewById(R.id.ButtonHistoryExpenses);
-
-        // Maybe remove the Manage Expenses button, nemogu to prokljuvit
-
-        historyButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                showHistory();
-            }
-        });
-
         View manageExpensesButton = view.findViewById(R.id.ButtonManageExpenses);
         manageExpensesButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -66,10 +63,7 @@ public class BillsFragment extends Fragment {
 
         return view;
 
-
-
     }
-
     private void addExpense() {
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -94,16 +88,24 @@ public class BillsFragment extends Fragment {
                 CheckBox expenseRecurring = dialogView.findViewById(R.id.expense_recurrence);
                 boolean recurring = expenseRecurring.isChecked();
 
-                TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
-                recentExpense.setText(name + " " + amount + " " + recurring);
 
-                Map<String, Object> expense = new HashMap<>();
-                expense.put("name", name);
-                expense.put("amount", amount);
-                expense.put("recurring", recurring);
 
-                expenses.document(name).set(expense);
+                if (!name.isEmpty() && !amount.isEmpty()) {
 
+                    TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
+                    String recurringText = recurring ? "Monthly " : " ";
+                    recentExpense.setText(name + ", " + amount + "€  " + recurringText);
+
+                    Map<String, Object> expense = new HashMap<>();
+                    expense.put("name", name);
+                    expense.put("amount", amount);
+                    expense.put("recurring", recurring);
+                    expense.put("timestamp", FieldValue.serverTimestamp());
+
+                    expenses.document(name).set(expense);
+            } else {
+                Toast.makeText(getContext(), "Please enter a name and amount", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -112,39 +114,10 @@ public class BillsFragment extends Fragment {
 
         }
 
-    private void showHistory() {
-
-        String user = currentFirebaseUser.getUid();
-        CollectionReference expenses = db.collection("users").document(user).collection("expenses");
-
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View dialogView = inflater.inflate(R.layout.dialog_history_expense, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(dialogView);
-        builder.setTitle("Expense History");
-
-        builder.setNegativeButton("Cancel", null);
-        ListView listView = dialogView.findViewById(R.id.listViewHistoryExpense);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
-        listView.setAdapter(adapter);
-
-        expenses.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (int i = 0; i < task.getResult().size(); i++) {
-                    adapter.add(task.getResult().getDocuments().get(i).get("name").toString() + " " + task.getResult().getDocuments().get(i).get("amount").toString() + " " + task.getResult().getDocuments().get(i).get("recurring").toString());
-                }
-            }
-        });
-
-
-        builder.show();
-
-    }
 
     private void manageExpenses() {
 
+        List<String> recentExpenses = new ArrayList<>();
         String user = currentFirebaseUser.getUid();
         CollectionReference expenses = db.collection("users").document(user).collection("expenses");
 
@@ -161,10 +134,17 @@ public class BillsFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
         listView.setAdapter(adapter);
 
-        expenses.get().addOnCompleteListener(task -> {
+        expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (int i = 0; i < task.getResult().size(); i++) {
-                    adapter.add(task.getResult().getDocuments().get(i).get("name").toString() + " " + task.getResult().getDocuments().get(i).get("amount").toString() + " " + task.getResult().getDocuments().get(i).get("recurring").toString());
+                    String name = task.getResult().getDocuments().get(i).get("name").toString();
+                    String amount = task.getResult().getDocuments().get(i).get("amount").toString();
+                    String recurring = task.getResult().getDocuments().get(i).get("recurring").toString();
+
+                    String recurringText = recurring.equals("true") ? "Monthly " : " ";
+                    String expense = name + ", " + amount + "€  " + recurringText;
+                    adapter.add(expense);
+                    recentExpenses.add(expense);
                 }
             }
         });
@@ -175,24 +155,27 @@ public class BillsFragment extends Fragment {
                 String expense = adapter.getItem(position);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Edit or Delete Expense");
-                builder.setMessage("Do you want to edit or delete this expense?");
-                builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
+                builder.setTitle("Delete Expense");
+                builder.setMessage("Do you want to delete this expense?");
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                        String user = currentFirebaseUser.getUid();
+                        CollectionReference expenses = db.collection("users").document(user).collection("expenses");
+
+                        String expenseName = expense.split(",")[0];
+                        expenses.document(expenseName).delete();
+
                         adapter.remove(expense);
                         adapter.notifyDataSetChanged();
 
+                        recentExpenses.remove(expense);
                         TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
-                        if (expense.equals(recentExpense.getText().toString())) {
-                            recentExpense.setText("No Expenses Yet");
-                            //TODO: Aplikacija se ruši ako ne stavis cjenu za expanse nije problem ali ono
+                        if (recentExpenses.size() >= 2){
+                            recentExpense.setText(recentExpenses.get(1));
+                        } else {
+                            recentExpense.setText("No expenses added yet");
                         }
                     }
                     });
