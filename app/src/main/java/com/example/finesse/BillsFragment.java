@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,19 +51,7 @@ public class BillsFragment extends Fragment {
         String user = currentFirebaseUser.getUid();
         CollectionReference expenses = db.collection("users").document(user).collection("expenses");
 
-        TextView recentExpense = view.findViewById(R.id.TextViewExpense1);
-        expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String name = task.getResult().getDocuments().get(0).get("name").toString();
-                String amount = task.getResult().getDocuments().get(0).get("amount").toString();
-                String recurring = task.getResult().getDocuments().get(0).get("recurring").toString();
-
-                String recurringText = recurring.equals("true") ? "Monthly " : " ";
-                String expense = name + ", " + amount + "€  " + recurringText;
-                recentExpense.setText(expense);
-
-            }
-        });
+        listExpenses(view);
 
         addBillButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -76,6 +65,28 @@ public class BillsFragment extends Fragment {
         });
 
         return view;
+
+    }
+    private void listExpenses(View view) {
+        String user = currentFirebaseUser.getUid();
+        CollectionReference expenses = db.collection("users").document(user).collection("expenses");
+
+        TextView recentExpense = view.findViewById(R.id.TextViewExpense1);
+        expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().getDocuments().size() > 0) {
+                String name = task.getResult().getDocuments().get(0).get("name").toString();
+                String amount = task.getResult().getDocuments().get(0).get("amount").toString();
+                String recurring = task.getResult().getDocuments().get(0).get("recurring").toString();
+
+                String recurringText = recurring.equals("true") ? "Monthly " : " ";
+                String expense = name + ", " + amount + "€  " + recurringText;
+                recentExpense.setText(expense);
+
+            } else {
+                recentExpense.setText("No expenses yet");
+
+            }
+        });
 
     }
     private void addExpense() {
@@ -128,7 +139,9 @@ public class BillsFragment extends Fragment {
 
         }
 
-
+    public void refreshFragment(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+    }
     private void manageExpenses() {
 
         List<String> recentExpenses = new ArrayList<>();
@@ -173,6 +186,7 @@ public class BillsFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Delete Expense");
                 builder.setMessage("Do you want to delete this expense?");
+                builder.setPositiveButton("Cancel", null);
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -187,7 +201,7 @@ public class BillsFragment extends Fragment {
                         adapter.notifyDataSetChanged();
 
                         recentExpenses.remove(expense);
-
+                        listExpenses(getView());
                     }
                     });
                     builder.show();
