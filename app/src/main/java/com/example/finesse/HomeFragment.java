@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.protobuf.LazyStringArrayList;
 
+import java.text.DecimalFormat;
+
 public class HomeFragment extends Fragment{
 
     TextView textEstimateIncome, textExpenseTotal, textTotalEst;
@@ -34,6 +36,8 @@ public class HomeFragment extends Fragment{
     String name, dateStart, dateEnd;
 
     Double hoursRate, bonus, FinEstimateIncome, total, est;
+
+    private static final DecimalFormat decfor = new DecimalFormat("0.00");
 
     //TODO: treba dodat nacin da aplikacija zna koliko je dana izmedu start i end da moze racunat kako treba, trenutno je na mjesec dana
 
@@ -61,6 +65,7 @@ public class HomeFragment extends Fragment{
                 dateEnd = task.getResult().getDocuments().get(0).get("date end").toString();
                 bonus = Double.parseDouble(task.getResult().getDocuments().get(0).get("bonus").toString());
                 FinEstimateIncome = hoursRate * hoursPerDay * daysPerWeek * 4;
+                decfor.format(FinEstimateIncome);
                 textEstimateIncome.setText("Estimated income: " + FinEstimateIncome.toString() + "€");
                 //TODO fix the 892.80000000000000001 euro glitch
             } else {
@@ -69,29 +74,32 @@ public class HomeFragment extends Fragment{
             }
         });
         expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+            if (task.isSuccessful() && task.getResult().getDocuments().size() > 0) {
                 for (int i = 0; i < task.getResult().size(); i++) {
                    String exp = task.getResult().getDocuments().get(i).get("amount").toString();
                    Double amount = Double.parseDouble(exp);
 
-                    if (i > 0)
+                    if (i == 0)
                     {
-                        total = total + amount;
-                    }else{
                         total = amount;
+                    }else{
+
+                        total = total + amount;
                     }
 
                 }
-
-                textExpenseTotal.setText("Estimated expenses: " + total.toString() + "€");
-                String incomeTest =  textEstimateIncome.getText().toString().trim();
-                if(incomeTest != null){
+                if(total != null){
+                    decfor.format(total);
+                    textExpenseTotal.setText("Estimated expenses: " + total.toString() + "€");
                     est = FinEstimateIncome - total;
+                    decfor.format(est);
                     textTotalEst.setText("Estimated total: " + est.toString() + "€");
+                }else{
+                    textExpenseTotal.setText("No expense yet");
+                    textTotalEst.setText("No estimate yet");
                 }
             }else{
                 textExpenseTotal.setText("No expense yet");
-                textTotalEst.setText("No estimate yet");
             }
         });
 
