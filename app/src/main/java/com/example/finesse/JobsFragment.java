@@ -59,7 +59,7 @@ public class JobsFragment extends Fragment {
 
         addJobs();
 
-        //TODO: treba sredit da se refresha jebemumater ;-;
+        //TODO: treba sredit da se refresha ;-;
 
 
 
