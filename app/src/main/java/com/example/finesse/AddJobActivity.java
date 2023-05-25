@@ -87,6 +87,7 @@ public class AddJobActivity extends AppCompatActivity {
                 addJob();
             }
         });
+
     }
 
     private void addJob() {
@@ -99,7 +100,10 @@ public class AddJobActivity extends AppCompatActivity {
         String bonus = jobBonusEditText.getText().toString();
         String user = currentFirebaseUser.getUid();
 
-
+        if (Integer.parseInt(daysPerWeek) > 7) {
+            Toast.makeText(this, "Please enter a valid number of days per week", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // NOTE: kad kliknes da pickas date, pojavi se tastatura, pretp radi toga sto je edit text
         //NOTE: gle ja nmg birat nista nego upisat tako da idk what you talking about...

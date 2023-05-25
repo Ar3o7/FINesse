@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,8 +38,6 @@ public class HomeFragment extends Fragment{
 
     public Double hoursRate, bonus, FinEstimateIncome, total, est;
 
-
-
     //TODO: treba dodat nacin da aplikacija zna koliko je dana izmedu start i end da moze racunat kako treba, trenutno je na mjesec dana
 
     @Override
@@ -69,7 +68,6 @@ public class HomeFragment extends Fragment{
                 //TODO fix the 892.80000000000000001 euro glitch
             } else {
                 textEstimateIncome.setText("No job yet");
-
             }
         });
         expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
@@ -91,6 +89,7 @@ public class HomeFragment extends Fragment{
                     textExpenseTotal.setText("Estimated expenses: " + total.toString() + "€");
                     est = FinEstimateIncome - total;
                     textTotalEst.setText("Estimated total: " + est.toString() + "€");
+
                 }else{
                     textExpenseTotal.setText("No expense yet");
                     textTotalEst.setText("No estimate yet");
