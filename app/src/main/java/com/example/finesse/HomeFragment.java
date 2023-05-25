@@ -20,10 +20,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.protobuf.LazyStringArrayList;
 
 public class HomeFragment extends Fragment{
 
-    TextView textEstimateIncome, TextTotal, textTotalEst;
+    TextView textEstimateIncome, textExpenseTotal, textTotalEst;
 
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -31,7 +33,7 @@ public class HomeFragment extends Fragment{
     Integer hoursPerDay, daysPerWeek ;
     String name, dateStart, dateEnd;
 
-    Double hoursRate, bonus, FinEstimateIncome;
+    Double hoursRate, bonus, FinEstimateIncome, total, est;
 
     //TODO: treba dodat nacin da aplikacija zna koliko je dana izmedu start i end da moze racunat kako treba, trenutno je na mjesec dana
 
@@ -42,43 +44,56 @@ public class HomeFragment extends Fragment{
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         textEstimateIncome = view.findViewById(R.id.textEstimateIncome);
-        TextTotal = view.findViewById(R.id.textExpenseTotal);
+        textExpenseTotal = view.findViewById(R.id.textExpenseTotal);
         textTotalEst = view.findViewById(R.id.textTotalEstimate);
         String user = currentFirebaseUser.getUid();
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
+        CollectionReference expenses = db.collection("users").document(user).collection("expenses");
 
-        //TODO: treba sredit da nekako uzima najnoviji poso
-        jobs.document("lord d.o.o").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if(documentSnapshot != null && documentSnapshot.exists()){
+        jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().getDocuments().size() > 0) {
+                name = task.getResult().getDocuments().get(0).get("job name").toString();
+                hoursRate = Double.parseDouble(task.getResult().getDocuments().get(0).get("hourly rate").toString());
+                hoursPerDay = Integer.parseInt(task.getResult().getDocuments().get(0).get("hours per day").toString());
+                daysPerWeek = Integer.parseInt(task.getResult().getDocuments().get(0).get("days per week").toString());
+                dateStart = task.getResult().getDocuments().get(0).get("date start").toString();
+                dateEnd = task.getResult().getDocuments().get(0).get("date end").toString();
+                bonus = Double.parseDouble(task.getResult().getDocuments().get(0).get("bonus").toString());
+                FinEstimateIncome = hoursRate * hoursPerDay * daysPerWeek * 4;
+                textEstimateIncome.setText("Estimated income: " + FinEstimateIncome.toString() + "€");
+                //TODO fix the 892.80000000000000001 euro glitch
+            } else {
+                textEstimateIncome.setText("No job yet");
 
-                        name = documentSnapshot.getString("job name");
-                        hoursRate = Double.parseDouble(documentSnapshot.getString("hourly rate"));
-                        hoursPerDay = Integer.parseInt(documentSnapshot.getString("hours per day"));
-                        daysPerWeek = Integer.parseInt(documentSnapshot.getString("days per week"));
-                        dateStart = documentSnapshot.getString("date start");
-                        dateEnd = documentSnapshot.getString("date end");
-                        bonus = Double.parseDouble(documentSnapshot.getString("bonus"));
-
-                        FinEstimateIncome = hoursRate * hoursPerDay * daysPerWeek * 4;
-                        textEstimateIncome.setText("Estimated total: " + FinEstimateIncome.toString() + "€");
-
-                        //TODO: treba napravit sad i za expences i onda za tota
-
-                    }
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(HomeFragment.super.getActivity(), "Error = " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (int i = 0; i < task.getResult().size(); i++) {
+                   String exp = task.getResult().getDocuments().get(i).get("amount").toString();
+                   Double amount = Double.parseDouble(exp);
 
+                    if (i > 0)
+                    {
+                        total = total + amount;
+                    }else{
+                        total = amount;
+                    }
+
+                }
+
+                textExpenseTotal.setText("Estimated expenses: " + total.toString() + "€");
+                String incomeTest =  textEstimateIncome.getText().toString().trim();
+                if(incomeTest != null){
+                    est = FinEstimateIncome - total;
+                    textTotalEst.setText("Estimated total: " + est.toString() + "€");
+                }
+            }else{
+                textExpenseTotal.setText("No expense yet");
+                textTotalEst.setText("No estimate yet");
+            }
+        });
 
 
         return view;

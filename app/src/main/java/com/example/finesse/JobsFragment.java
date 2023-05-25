@@ -59,11 +59,11 @@ public class JobsFragment extends Fragment {
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
 
-        //TODO: treba sredit da nekako uzima najnoviji poso
+        //TODO: treba sredit da se refresha jebemumater ;-;
 
 
         jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+            if (task.isSuccessful() && task.getResult().getDocuments().size() > 0) {
                 name = task.getResult().getDocuments().get(0).get("job name").toString();
                 hoursRate = task.getResult().getDocuments().get(0).get("hourly rate").toString();
                 hoursPerDay = task.getResult().getDocuments().get(0).get("hours per day").toString();
@@ -80,35 +80,12 @@ public class JobsFragment extends Fragment {
                 textDate_start.setText("Date started: " + dateStart);
                 textDate_end.setText("date to end: " + dateEnd);
 
+            }else {
+                textJobName.setText("No job yet");
             }
         });
 
-        jobs.document("lord d.o.o").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if(documentSnapshot != null && documentSnapshot.exists()){
 
-                        name = documentSnapshot.getString("job name");
-                        hoursRate = documentSnapshot.getString("hourly rate");
-                        hoursPerDay = documentSnapshot.getString("hours per day");
-                        daysPerWeek = documentSnapshot.getString("days per week");
-                        dateStart = documentSnapshot.getString("date start");
-                        dateEnd = documentSnapshot.getString("date end");
-                        bonus = documentSnapshot.getString("bonus");
-
-                        textJobName.setText("name: " + name);
-                        textH_rate.setText("Hourly rate: " + hoursRate + "€");
-                        textH_day.setText("Hours per day: " + hoursPerDay);
-                        textD_week.setText("Days per week: " + daysPerWeek);
-                        textBonus.setText("bonus: " + bonus);
-                        textDate_start.setText("Date started: " + dateStart);
-                        textDate_end.setText("date to end: " + dateEnd);
-                    }
-                }
-            }
-        });
 
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
