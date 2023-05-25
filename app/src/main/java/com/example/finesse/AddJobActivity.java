@@ -118,7 +118,6 @@ public class AddJobActivity extends AppCompatActivity {
         job.put("date start",dateStart);
         job.put("date end",dateEnd);
         job.put("bonus",bonus);
-        job.put("active","true");
 
 
 
