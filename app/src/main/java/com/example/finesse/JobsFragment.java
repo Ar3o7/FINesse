@@ -55,13 +55,34 @@ public class JobsFragment extends Fragment {
         textBonus = view.findViewById(R.id.textBonus);
         textDate_start = view.findViewById(R.id.textDate_start);
         textDate_end = view.findViewById(R.id.textDate_end);
-        String user = currentFirebaseUser.getUid();
 
-        CollectionReference jobs = db.collection("users").document(user).collection("jobs");
+
+        addJobs();
 
         //TODO: treba sredit da se refresha jebemumater ;-;
 
 
+
+
+
+
+
+        addJobButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddJobActivity.class);
+                startActivity(intent);
+                addJobs();
+            }
+        });
+        addJobs();
+        return view;
+
+        }
+
+    private void addJobs() {
+        String user = currentFirebaseUser.getUid();
+        CollectionReference jobs = db.collection("users").document(user).collection("jobs");
         jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().getDocuments().size() > 0) {
                 name = task.getResult().getDocuments().get(0).get("job name").toString();
@@ -83,19 +104,7 @@ public class JobsFragment extends Fragment {
                 textJobName.setText("No job yet");
             }
         });
-
-
-
-        addJobButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddJobActivity.class);
-                startActivity(intent);
-            }
-        });
-        return view;
-        
-        }
+    }
     }
 
 
