@@ -59,19 +59,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/finSecondary"
-            android:text="Add expences"
+            android:layout_centerHorizontal="true"
+            android:text="Add expense"
             android:textColor="@color/black"
             android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/ButtonHistoryExpenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:backgroundTint="@color/finSecondary"
-                android:text="History"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
 
     </RelativeLayout>
     <LinearLayout
@@ -86,15 +77,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/finSecondary"
-            android:text="Manage expences"
+            android:layout_centerHorizontal="true"
+            android:text="Manage expenses"
             android:layout_marginHorizontal="60dp"
             android:textColor="@color/black"
             android:textSize="18sp" />
     </LinearLayout>
-
-
-
-
 
 </RelativeLayout>
 

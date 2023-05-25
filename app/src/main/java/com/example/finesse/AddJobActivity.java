@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -110,20 +109,24 @@ public class AddJobActivity extends AppCompatActivity {
         //NOTE: Okay skuzio sam nakon sto sam probo duplo kliknut i uspilo je. tehnički mozes stavit
         //da je button ili da text thingy nije edditable mozda bi to radilo.
 
-        Map<String,Object> job = new HashMap<>();
-        job.put("job name",name);
-        job.put("hourly rate",hoursDayRate);
-        job.put("hours per day",hoursPerDay);
-        job.put("days per week",daysPerWeek);
-        job.put("date start",dateStart);
-        job.put("date end",dateEnd);
-        job.put("bonus",bonus);
+        if (!name.isEmpty() && !hoursDayRate.isEmpty() && !hoursPerDay.isEmpty() && !daysPerWeek.isEmpty() && !dateStart.isEmpty() && !dateEnd.isEmpty()) {
+
+            Map<String, Object> job = new HashMap<>();
+            job.put("job name", name);
+            job.put("hourly rate", hoursDayRate);
+            job.put("hours per day", hoursPerDay);
+            job.put("days per week", daysPerWeek);
+            job.put("date start", dateStart);
+            job.put("date end", dateEnd);
+            job.put("bonus", bonus);
 
 
+            CollectionReference jobs = db.collection("users").document(user).collection("jobs");
+            jobs.document(name).set(job);
 
-        CollectionReference jobs = db.collection("users").document(user).collection("jobs");
-        jobs.document(name).set(job);
-
-        finish();
+            finish();
+        } else {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        }
     }
 }
