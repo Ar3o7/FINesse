@@ -50,6 +50,20 @@ public class BillsFragment extends Fragment {
         String user = currentFirebaseUser.getUid();
         CollectionReference expenses = db.collection("users").document(user).collection("expenses");
 
+        TextView recentExpense = view.findViewById(R.id.TextViewExpense1);
+        expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String name = task.getResult().getDocuments().get(0).get("name").toString();
+                String amount = task.getResult().getDocuments().get(0).get("amount").toString();
+                String recurring = task.getResult().getDocuments().get(0).get("recurring").toString();
+
+                String recurringText = recurring.equals("true") ? "Monthly " : " ";
+                String expense = name + ", " + amount + "€  " + recurringText;
+                recentExpense.setText(expense);
+
+            }
+        });
+
         addBillButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) { addExpense(); }
@@ -136,6 +150,7 @@ public class BillsFragment extends Fragment {
 
         expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                recentExpenses.clear();
                 for (int i = 0; i < task.getResult().size(); i++) {
                     String name = task.getResult().getDocuments().get(i).get("name").toString();
                     String amount = task.getResult().getDocuments().get(i).get("amount").toString();
@@ -148,6 +163,7 @@ public class BillsFragment extends Fragment {
                 }
             }
         });
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -171,12 +187,7 @@ public class BillsFragment extends Fragment {
                         adapter.notifyDataSetChanged();
 
                         recentExpenses.remove(expense);
-                        TextView recentExpense = getView().findViewById(R.id.TextViewExpense1);
-                        if (recentExpenses.size() >= 2){
-                            recentExpense.setText(recentExpenses.get(1));
-                        } else {
-                            recentExpense.setText("No expenses added yet");
-                        }
+
                     }
                     });
                     builder.show();
