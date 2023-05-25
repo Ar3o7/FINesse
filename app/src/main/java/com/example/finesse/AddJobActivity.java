@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -98,11 +99,7 @@ public class AddJobActivity extends AppCompatActivity {
         String bonus = jobBonusEditText.getText().toString();
         String user = currentFirebaseUser.getUid();
 
-        // TODO: Add validation to check if all fields are filled in
 
-        // TODO: Promijeni end date u TextView tako da ga korisnik ne moze editat
-
-        //TODO: nisi me bas skuzio moras pormjenit da u pozicijama di se trazi broj samo mozes broj upisat
 
         // NOTE: kad kliknes da pickas date, pojavi se tastatura, pretp radi toga sto je edit text
         //NOTE: gle ja nmg birat nista nego upisat tako da idk what you talking about...
@@ -119,7 +116,7 @@ public class AddJobActivity extends AppCompatActivity {
             job.put("date start", dateStart);
             job.put("date end", dateEnd);
             job.put("bonus", bonus);
-
+            job.put("timestamp", FieldValue.serverTimestamp());
 
             CollectionReference jobs = db.collection("users").document(user).collection("jobs");
             jobs.document(name).set(job);
