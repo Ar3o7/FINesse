@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 
 
 public class JobsFragment extends Fragment {
@@ -59,6 +60,29 @@ public class JobsFragment extends Fragment {
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
 
         //TODO: treba sredit da nekako uzima najnoviji poso
+
+
+        jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                name = task.getResult().getDocuments().get(0).get("job name").toString();
+                hoursRate = task.getResult().getDocuments().get(0).get("hourly rate").toString();
+                hoursPerDay = task.getResult().getDocuments().get(0).get("hours per day").toString();
+                daysPerWeek = task.getResult().getDocuments().get(0).get("days per week").toString();
+                dateStart = task.getResult().getDocuments().get(0).get("date start").toString();
+                dateEnd = task.getResult().getDocuments().get(0).get("date end").toString();
+                bonus = task.getResult().getDocuments().get(0).get("bonus").toString();
+
+                textJobName.setText("name: " + name);
+                textH_rate.setText("Hourly rate: " + hoursRate + "€");
+                textH_day.setText("Hours per day: " + hoursPerDay);
+                textD_week.setText("Days per week: " + daysPerWeek);
+                textBonus.setText("bonus: " + bonus);
+                textDate_start.setText("Date started: " + dateStart);
+                textDate_end.setText("date to end: " + dateEnd);
+
+            }
+        });
+
         jobs.document("lord d.o.o").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -83,11 +107,6 @@ public class JobsFragment extends Fragment {
                         textDate_end.setText("date to end: " + dateEnd);
                     }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(JobsFragment.super.getActivity(), "Error = " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
