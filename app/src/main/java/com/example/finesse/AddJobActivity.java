@@ -90,7 +90,7 @@ public class AddJobActivity extends AppCompatActivity {
 
     }
 
-    private void addJob() {
+    public void addJob() {
         String name = jobNameEditText.getText().toString();
         String hoursDayRate = jobHoursRateEditText.getText().toString();
         String hoursPerDay = jobHoursDayEditText.getText().toString();
@@ -104,11 +104,6 @@ public class AddJobActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid number of days per week", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // NOTE: kad kliknes da pickas date, pojavi se tastatura, pretp radi toga sto je edit text
-        //NOTE: gle ja nmg birat nista nego upisat tako da idk what you talking about...
-        //NOTE: Okay skuzio sam nakon sto sam probo duplo kliknut i uspilo je. tehnički mozes stavit
-        //da je button ili da text thingy nije edditable mozda bi to radilo.
 
         if (!name.isEmpty() && !hoursDayRate.isEmpty() && !hoursPerDay.isEmpty() && !daysPerWeek.isEmpty() && !dateStart.isEmpty() && !dateEnd.isEmpty()) {
 

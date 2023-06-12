@@ -89,7 +89,7 @@ public class BillsFragment extends Fragment {
         });
 
     }
-    private void addExpense() {
+    public void addExpense() {
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogView = inflater.inflate(R.layout.dialog_add_expense, null);
