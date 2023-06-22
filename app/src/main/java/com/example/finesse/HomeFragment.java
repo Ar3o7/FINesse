@@ -26,7 +26,7 @@ import com.google.protobuf.LazyStringArrayList;
 
 import java.text.DecimalFormat;
 
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment {
 
     TextView textEstimateIncome, textExpenseTotal, textTotalEst;
 
@@ -73,8 +73,8 @@ public class HomeFragment extends Fragment{
         expenses.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().getDocuments().size() > 0) {
                 for (int i = 0; i < task.getResult().size(); i++) {
-                   String exp = task.getResult().getDocuments().get(i).get("amount").toString();
-                   Double amount = Double.parseDouble(exp);
+                    String exp = task.getResult().getDocuments().get(i).get("amount").toString();
+                    Double amount = Double.parseDouble(exp);
 
                     if (i == 0)
                     {

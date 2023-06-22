@@ -14,14 +14,14 @@
         android:theme="@style/CalenderViewCustom"
         android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
         android:weekSeparatorLineColor="@color/black"
-        android:unfocusedMonthDateColor="@color/black"
-        />
+        android:unfocusedMonthDateColor="@color/black"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="350dp"
         android:layout_marginHorizontal="30dp"
+        android:id="@+id/estimateBoxView"
         app:cardBackgroundColor="@color/finPrimary"
         app:layout_constraintBottom_toBottomOf="@id/calendarView"
         app:layout_constraintEnd_toEndOf="@id/calendarView"
@@ -76,6 +76,13 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
-
+    <Button
+        android:id="@+id/addHoursButton"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/estimateBoxView"
+        android:layout_marginTop="16dp"
+        android:text="Add hours worked" />
 
 </RelativeLayout>
