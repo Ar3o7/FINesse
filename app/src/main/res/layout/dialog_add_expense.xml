@@ -1,26 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
+    android:layout_margin="30dp">
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/expense_name"
-        android:hint="name"/>
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/expense_price"
-        android:hint="Price"
-        android:inputType="numberDecimal"/>
+        <TextView
+            android:id="@+id/dialog_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Expense"
+            android:textAlignment="center"
+            android:textColor="@color/finSecondary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/expense_recurrence"
-        android:text="Recurring"/>
+        <EditText
+            android:id="@+id/expense_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:hint="Name"
+            android:textSize="36sp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/finSecondary" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/expense_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_edittext"
+            android:hint="Price"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="16dp" />
+
+        <CheckBox
+            android:id="@+id/expense_recurrence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:drawableStart="@drawable/ic_monthly"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/checkbox_selector"
+            android:text="Monthly"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

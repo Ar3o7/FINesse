@@ -29,15 +29,11 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import kotlin.collections.ArrayDeque;
-
 
 public class BillsFragment extends Fragment {
 
-    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
@@ -53,21 +49,25 @@ public class BillsFragment extends Fragment {
 
         listExpenses(view);
 
-        addBillButton.setOnClickListener(new View.OnClickListener(){
+        addBillButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { addExpense(); }
+            public void onClick(View v) {
+                addExpense();
+            }
         });
 
         View manageExpensesButton = view.findViewById(R.id.ButtonManageExpenses);
-        manageExpensesButton.setOnClickListener(new View.OnClickListener(){
+        manageExpensesButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {manageExpenses();}
+            public void onClick(View v) {
+                manageExpenses();
+            }
         });
 
         return view;
-
     }
-    private void listExpenses(View view) {
+
+    public void listExpenses(View view) {
         String user = currentFirebaseUser.getUid();
         CollectionReference expenses = db.collection("users").document(user).collection("expenses");
 
@@ -81,14 +81,12 @@ public class BillsFragment extends Fragment {
                 String recurringText = recurring.equals("true") ? "Monthly " : " ";
                 String expense = name + ", " + amount + "€  " + recurringText;
                 recentExpense.setText(expense);
-
             } else {
                 recentExpense.setText("No expenses yet");
-
             }
         });
-
     }
+
     public void addExpense() {
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -96,7 +94,6 @@ public class BillsFragment extends Fragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(dialogView);
-        builder.setTitle("Add Expense");
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -128,8 +125,8 @@ public class BillsFragment extends Fragment {
                     expense.put("timestamp", FieldValue.serverTimestamp());
 
                     expenses.document(name).set(expense);
-            } else {
-                Toast.makeText(getContext(), "Please enter a name and amount", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Please enter a name and amount", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -137,13 +134,14 @@ public class BillsFragment extends Fragment {
         builder.setNegativeButton("Cancel", null);
         builder.show();
 
-        }
+    }
 
-    public void refreshFragment(){
+
+    public void refreshFragment() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
     }
-    private void manageExpenses() {
 
+    private void manageExpenses() {
         List<String> recentExpenses = new ArrayList<>();
         String user = currentFirebaseUser.getUid();
         CollectionReference expenses = db.collection("users").document(user).collection("expenses");
@@ -203,10 +201,10 @@ public class BillsFragment extends Fragment {
                         recentExpenses.remove(expense);
                         listExpenses(getView());
                     }
-                    });
-                    builder.show();
-                }
-            });
-            builder.show();
-        }
+                });
+                builder.show();
+            }
+        });
+        builder.show();
+    }
 }
