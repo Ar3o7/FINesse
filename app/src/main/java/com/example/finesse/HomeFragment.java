@@ -1,13 +1,9 @@
 package com.example.finesse;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.protobuf.LazyStringArrayList;
-
-import java.text.DecimalFormat;
 
 public class HomeFragment extends Fragment implements AddHoursDialogActivity.AddHoursDialogListener{
 
@@ -123,7 +112,10 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
     }
 
     @Override
-    public void onHoursAdded(Double hoursWorked) {
+    public void onHoursAdded(String date, Double hoursWorked) {
+        Double income = hoursRate * hoursWorked;
         Toast.makeText(requireContext(), "Hours added: " + hoursWorked, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "Income for " + date + ": " + income, Toast.LENGTH_SHORT).show();
+
     }
 }

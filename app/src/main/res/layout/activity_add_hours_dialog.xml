@@ -2,26 +2,37 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="16dp">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Hours Worked"
+        android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/buttonSelectDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Date"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/editTextHours"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter hours worked"
-        android:inputType="numberDecimal"/>
+        android:hint="Hours Worked"
+        android:textAlignment="center"
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/buttonAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:text="Add" />
 
 </LinearLayout>
