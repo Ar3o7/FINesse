@@ -1,15 +1,18 @@
 package com.example.finesse;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +29,7 @@ import com.google.protobuf.LazyStringArrayList;
 
 import java.text.DecimalFormat;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AddHoursDialogActivity.AddHoursDialogListener{
 
     TextView textEstimateIncome, textExpenseTotal, textTotalEst;
 
@@ -35,6 +38,8 @@ public class HomeFragment extends Fragment {
 
     Integer hoursPerDay, daysPerWeek ;
     String name, dateStart, dateEnd;
+
+    Button addHoursButton;
 
     public Double hoursRate, bonus, FinEstimateIncome, total, est;
 
@@ -49,6 +54,7 @@ public class HomeFragment extends Fragment {
         textEstimateIncome = view.findViewById(R.id.textEstimateIncome);
         textExpenseTotal = view.findViewById(R.id.textExpenseTotal);
         textTotalEst = view.findViewById(R.id.textTotalEstimate);
+        addHoursButton = view.findViewById(R.id.addHoursButton);
         String user = currentFirebaseUser.getUid();
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
@@ -99,7 +105,25 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        addHoursButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showAddHoursDialog();
+            }
+        });
 
         return view;
+    }
+
+    private void showAddHoursDialog() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        AddHoursDialogActivity dialogFragment = new AddHoursDialogActivity();
+        dialogFragment.setTargetFragment(HomeFragment.this, 0);
+        dialogFragment.show(fragmentManager, "AddHoursDialogActivity");
+    }
+
+    @Override
+    public void onHoursAdded(Double hoursWorked) {
+        Toast.makeText(requireContext(), "Hours added: " + hoursWorked, Toast.LENGTH_SHORT).show();
     }
 }

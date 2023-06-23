@@ -1,9 +1,7 @@
 package com.example.finesse;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +9,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 public class AddHoursDialogActivity extends DialogFragment {
@@ -21,6 +20,12 @@ public class AddHoursDialogActivity extends DialogFragment {
 
     private EditText editTextHours;
     private AddHoursDialogListener listener;
+
+    public static void showAddHoursDialog(@NonNull Context context, @Nullable androidx.fragment.app.Fragment targetFragment) {
+        AddHoursDialogActivity dialogFragment = new AddHoursDialogActivity();
+        dialogFragment.setTargetFragment(targetFragment, 0);
+        dialogFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "AddHoursDialogActivity");
+    }
 
     @NonNull
     @Override
@@ -59,6 +64,3 @@ public class AddHoursDialogActivity extends DialogFragment {
         }
     }
 }
-
-
-
