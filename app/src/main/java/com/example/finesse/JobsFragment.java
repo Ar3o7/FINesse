@@ -80,13 +80,13 @@ public class JobsFragment extends Fragment {
                 dateStart = task.getResult().getDocuments().get(0).get("date start").toString();
                 dateEnd = task.getResult().getDocuments().get(0).get("date end").toString();
                 bonus = task.getResult().getDocuments().get(0).get("bonus").toString();
-                textJobName.setText("name: " + name);
+                textJobName.setText("Name: " + name);
                 textH_rate.setText("Hourly rate: " + hoursRate + "€");
                 textH_day.setText("Hours per day: " + hoursPerDay);
                 textD_week.setText("Days per week: " + daysPerWeek);
-                textBonus.setText("bonus: " + bonus);
+                textBonus.setText("Bonus: " + bonus);
                 textDate_start.setText("Date started: " + dateStart);
-                textDate_end.setText("date to end: " + dateEnd);
+                textDate_end.setText("End Date: " + dateEnd);
 
             }else {
                 textJobName.setText("No job yet");

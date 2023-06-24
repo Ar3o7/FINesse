@@ -68,7 +68,7 @@ public class AddHoursDialogActivity extends DialogFragment {
         return dialog;
     }
 
-    private void showDatePickerDialog() {
+    public void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);

@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
-                android:text="name:"
+                android:text="Name:"
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp" />
 
