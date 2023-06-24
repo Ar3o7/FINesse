@@ -51,10 +51,6 @@ public class JobsFragment extends Fragment {
 
 
 
-
-
-
-
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

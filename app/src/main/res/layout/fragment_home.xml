@@ -6,48 +6,89 @@
     tools:context=".HomeFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:dateTextAppearance="@style/CalenderViewDateCustomText"
-        android:theme="@style/CalenderViewCustom"
-        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
-        android:weekSeparatorLineColor="@color/black"
-        android:unfocusedMonthDateColor="@color/black"/>
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="30dp"
-        android:id="@+id/estimateBoxView"
+        android:id="@+id/newCardView"
         app:cardBackgroundColor="@color/finPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/calendarView"
-        app:layout_constraintEnd_toEndOf="@id/calendarView"
         app:cardCornerRadius="20dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp">
 
             <TextView
-                android:id="@id/text"
+                android:id="@+id/textNewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="Current Date: "
+                android:textColor="@color/white"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/textMoneyMade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/textNewTitle"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textColor="@color/finSecondary"
+                android:textSize="20sp"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newCardView"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="30dp"
+        android:id="@+id/estimateBoxView"
+        app:cardBackgroundColor="@color/finPrimary"
+        app:cardCornerRadius="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:id="@+id/textCurrentDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:text="Estimate"
                 android:textColor="@color/white"
-                android:textSize="22sp"/>
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/textAmountMade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/textCurrentDate"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textColor="@color/finSecondary"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/textEstimateIncome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
+                android:layout_below="@id/textAmountMade"
+                android:layout_marginTop="10dp"
                 android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="20sp"/>
@@ -57,18 +98,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="80dp"
+                android:layout_below="@id/textEstimateIncome"
+                android:layout_marginTop="10dp"
                 android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="20sp"/>
-
 
             <TextView
                 android:id="@+id/textTotalEstimate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="120dp"
+                android:layout_below="@id/textExpenseTotal"
+                android:layout_marginTop="10dp"
                 android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="20sp"/>
