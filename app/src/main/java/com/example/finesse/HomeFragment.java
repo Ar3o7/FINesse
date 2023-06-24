@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
                 dateEnd = task.getResult().getDocuments().get(0).get("date end").toString();
                 bonus = Double.parseDouble(task.getResult().getDocuments().get(0).get("bonus").toString());
                 FinEstimateIncome = hoursRate * hoursPerDay * daysPerWeek * 4;
-                textEstimateIncome.setText("Estimated income: " + FinEstimateIncome.toString() + "€");
+                textEstimateIncome.setText("Estimated income: " + FinEstimateIncome + "€");
 
             } else {
                 textEstimateIncome.setText("No job yet");
@@ -97,9 +97,9 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
                 }
 
                 if (total != null && FinEstimateIncome != null) {
-                    textExpenseTotal.setText("Estimated expenses: " + total.toString() + "€");
+                    textExpenseTotal.setText("Estimated expenses: " + total + "€");
                     est = FinEstimateIncome - total;
-                    textTotalEst.setText("Estimated total: " + est.toString() + "€");
+                    textTotalEst.setText("Estimated total: " + est + "€");
                 } else {
                     textExpenseTotal.setText("No expenses yet");
                     textTotalEst.setText("No estimate yet");
