@@ -14,7 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddHoursDialogActivity extends DialogFragment {
 
@@ -27,6 +35,16 @@ public class AddHoursDialogActivity extends DialogFragment {
     private AddHoursDialogListener listener;
     private Button buttonSelectDate;
     private String selectedDate;
+
+    public Double hoursWorked;
+
+    public int day;
+    public int month;
+
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    String user = currentFirebaseUser.getUid();
 
     public static void showAddHoursDialog(@NonNull Context context, @Nullable androidx.fragment.app.Fragment targetFragment) {
         AddHoursDialogActivity dialogFragment = new AddHoursDialogActivity();
@@ -54,8 +72,10 @@ public class AddHoursDialogActivity extends DialogFragment {
             public void onClick(View v) {
                 String hoursStr = editTextHours.getText().toString().trim();
                 if (!hoursStr.isEmpty() && selectedDate!=null) {
-                    Double hoursWorked = Double.parseDouble(hoursStr);
+                   hoursWorked = Double.parseDouble(hoursStr);
+                    DBSender(hoursWorked,month,day);
                     listener.onHoursAdded(selectedDate, hoursWorked);
+
                     dismiss();
                 } else {
                     dismiss();
@@ -71,8 +91,8 @@ public class AddHoursDialogActivity extends DialogFragment {
     public void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+         month = calendar.get(Calendar.MONTH);
+         day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
@@ -85,6 +105,18 @@ public class AddHoursDialogActivity extends DialogFragment {
         datePickerDialog.show();
     }
 
+    public void DBSender(double hoursWorked, int m, int d){
+        String dateM =  Integer.toString(m);
+        String dateD =  Integer.toString(d);
+        Map<String, Object> wDay = new HashMap<>();
+        wDay.put("hours worked", hoursWorked);
+        wDay.put("hourly rate", dateD);
+        wDay.put("timestamp", FieldValue.serverTimestamp());
+
+
+        CollectionReference workdays = db.collection("users").document(user).collection(dateM);
+        workdays.document(dateD).set(wDay);
+    }
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
