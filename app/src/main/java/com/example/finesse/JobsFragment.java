@@ -25,8 +25,6 @@ public class JobsFragment extends Fragment {
 
     String name, dateStart, hoursRate, dateEnd, bonus, hoursPerDay, daysPerWeek ;
 
-
-
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -44,12 +42,9 @@ public class JobsFragment extends Fragment {
         textDate_start = view.findViewById(R.id.textDate_start);
         textDate_end = view.findViewById(R.id.textDate_end);
 
-
         addJobs();
 
         //TODO: treba sredit da se refresha ;-;
-
-
 
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +84,6 @@ public class JobsFragment extends Fragment {
             }
         });
     }
-    }
+}
 
 
