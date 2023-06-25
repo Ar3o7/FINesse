@@ -38,8 +38,8 @@ public class AddHoursDialogActivity extends DialogFragment {
 
     public Double hoursWorked;
 
-    public int day;
-    public int month;
+    public int dDay;
+    public int dMonth;
 
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -73,7 +73,7 @@ public class AddHoursDialogActivity extends DialogFragment {
                 String hoursStr = editTextHours.getText().toString().trim();
                 if (!hoursStr.isEmpty() && selectedDate!=null) {
                    hoursWorked = Double.parseDouble(hoursStr);
-                    DBSender(hoursWorked,month,day);
+                    DBSender(hoursWorked,dMonth,dDay);
                     listener.onHoursAdded(selectedDate, hoursWorked);
 
                     dismiss();
@@ -91,14 +91,16 @@ public class AddHoursDialogActivity extends DialogFragment {
     public void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-         month = calendar.get(Calendar.MONTH);
-         day = calendar.get(Calendar.DAY_OF_MONTH);
+        int  month = calendar.get(Calendar.MONTH);
+         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         selectedDate = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                        dMonth = monthOfYear+1;
+                        dDay = dayOfMonth;
                         buttonSelectDate.setText(selectedDate);
                     }
                 }, year, month, day);
