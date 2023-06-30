@@ -31,13 +31,37 @@
                 android:textColor="@color/white"
                 android:textSize="22sp" />
 
+
+
+            <TextView
+                android:id="@+id/textDaysWorked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/textNewTitle"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textColor="@color/finSecondary"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/textHoursWorked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/textNewTitle"
+                android:layout_marginTop="30dp"
+                android:text=""
+                android:textColor="@color/finSecondary"
+                android:textSize="20sp"/>
+
             <TextView
                 android:id="@+id/textMoneyMade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/textNewTitle"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="50dp"
                 android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="20sp"/>
@@ -61,7 +85,7 @@
             android:layout_marginBottom="5dp">
 
             <TextView
-                android:id="@+id/textCurrentDate"
+                android:id="@+id/textest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -76,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/textCurrentDate"
+                android:layout_below="@id/textest"
                 android:layout_marginTop="10dp"
                 android:text=""
                 android:textColor="@color/finSecondary"

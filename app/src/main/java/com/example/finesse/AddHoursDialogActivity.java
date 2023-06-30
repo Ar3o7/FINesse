@@ -28,6 +28,8 @@ public class AddHoursDialogActivity extends DialogFragment {
 
     public interface AddHoursDialogListener {
         void onHoursAdded(String date, Double hoursWorked);
+
+        void onHoursAdded(String date, Integer hoursWorked);
     }
 
     private EditText editTextHours;
@@ -36,10 +38,10 @@ public class AddHoursDialogActivity extends DialogFragment {
     private Button buttonSelectDate;
     private String selectedDate;
 
-    public Double hoursWorked;
+    public Integer hoursWorked;
 
-    public int dDay;
-    public int dMonth;
+    public Integer dDay;
+    public Integer dMonth;
 
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -72,7 +74,7 @@ public class AddHoursDialogActivity extends DialogFragment {
             public void onClick(View v) {
                 String hoursStr = editTextHours.getText().toString().trim();
                 if (!hoursStr.isEmpty() && selectedDate!=null) {
-                   hoursWorked = Double.parseDouble(hoursStr);
+                   hoursWorked = Integer.parseInt(hoursStr);
                     DBSender(hoursWorked,dMonth,dDay);
                     listener.onHoursAdded(selectedDate, hoursWorked);
 
@@ -107,12 +109,13 @@ public class AddHoursDialogActivity extends DialogFragment {
         datePickerDialog.show();
     }
 
-    public void DBSender(double hoursWorked, int m, int d){
+    public void DBSender(int hoursWorked, int m, int d){
         String dateM =  Integer.toString(m);
         String dateD =  Integer.toString(d);
+        String hw = Integer.toString(hoursWorked);
         Map<String, Object> wDay = new HashMap<>();
         wDay.put("hours worked", hoursWorked);
-        wDay.put("hourly rate", dateD);
+        wDay.put("day", dateD);
         wDay.put("timestamp", FieldValue.serverTimestamp());
 
 
