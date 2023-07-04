@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        
+
         textExpenseTotal = view.findViewById(R.id.textExpenseTotal);
         addHoursButton = view.findViewById(R.id.addHoursButton);
         textNewTitle = view.findViewById(R.id.textNewTitle);
@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
         CollectionReference expenses = db.collection("users").document(user).collection("expenses");
-        CollectionReference workDays = db.collection("users").document(user).collection("currentMonth");
+
 
         // Update the textNewTitle TextView with the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -74,11 +74,35 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
         SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
         String currentMonth = monthFormat.format(calendar.getTime());
 
+        CollectionReference workDays = db.collection("users").document(user).collection(currentMonth);
+
 
         jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(querySnapshot1 -> {
-                if (querySnapshot1.isSuccessful()) {
+            if (querySnapshot1.isSuccessful()) {
+                QuerySnapshot qs1 = querySnapshot1.getResult();
+                if (qs1 != null && qs1.getDocuments().size() > 0) {
+                    double hoursRate = Double.parseDouble(qs1.getDocuments().get(0).get("hourly rate").toString());
+                    int hoursPerDay = Integer.parseInt(qs1.getDocuments().get(0).get("hours per day").toString());
+                    int daysPerWeek = Integer.parseInt(qs1.getDocuments().get(0).get("days per week").toString());
+                    double before = hoursRate * hoursPerDay * daysPerWeek * 4;
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    double FinEstimateIncome = Double.parseDouble(df.format(before));
+
+                    textAmountMade.setText("Estimated income: " + FinEstimateIncome + "€");
+                }
+            } else {
+                Exception e = querySnapshot1.getException();
+                e.printStackTrace();
+            }
+        });
+
+        //Query for income and expenses
+        jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(querySnapshot1 -> {
+            expenses.get().addOnCompleteListener(querySnapshot2 -> {
+                if (querySnapshot1.isSuccessful() && querySnapshot2.isSuccessful()) {
                     QuerySnapshot qs1 = querySnapshot1.getResult();
-                    if (qs1 != null && qs1.getDocuments().size() > 0) {
+                    QuerySnapshot qs2 = querySnapshot2.getResult();
+                    if (qs1 != null && qs1.getDocuments().size() > 0 && qs2 != null && qs2.getDocuments().size() > 0) {
                         double hoursRate = Double.parseDouble(qs1.getDocuments().get(0).get("hourly rate").toString());
                         int hoursPerDay = Integer.parseInt(qs1.getDocuments().get(0).get("hours per day").toString());
                         int daysPerWeek = Integer.parseInt(qs1.getDocuments().get(0).get("days per week").toString());
@@ -86,58 +110,36 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
                         DecimalFormat df = new DecimalFormat("#.##");
                         double FinEstimateIncome = Double.parseDouble(df.format(before));
 
-                        textAmountMade.setText("Estimated income: " + FinEstimateIncome +"€");
+                        double total = 0.0;
+                        for (int i = 0; i < qs2.size(); i++) {
+                            double d = Double.parseDouble(qs2.getDocuments().get(i).get("amount").toString());
+                            total += d;
+                        }
+
+                        double diff = FinEstimateIncome - total;
+                        double difference = Double.parseDouble(df.format(diff));
+                        textExpenseTotal.setText("Total expenses: " + total + "€");
+                        textTotalEstimate.setText("Estimated balance: " + difference + "€");
                     }
                 } else {
                     Exception e = querySnapshot1.getException();
+
+                    if (e == null) {
+                        e = querySnapshot2.getException();
+                    }
                     e.printStackTrace();
                 }
             });
-
-        //Query for income and expenses
-        jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(querySnapshot1 -> {
-            expenses.get().addOnCompleteListener(querySnapshot2 -> {
-                    if (querySnapshot1.isSuccessful() && querySnapshot2.isSuccessful()) {
-                        QuerySnapshot qs1 = querySnapshot1.getResult();
-                        QuerySnapshot qs2 = querySnapshot2.getResult();
-                        if (qs1 != null && qs1.getDocuments().size() > 0 && qs2 != null && qs2.getDocuments().size() > 0) {
-                            double hoursRate = Double.parseDouble(qs1.getDocuments().get(0).get("hourly rate").toString());
-                            int hoursPerDay = Integer.parseInt(qs1.getDocuments().get(0).get("hours per day").toString());
-                            int daysPerWeek = Integer.parseInt(qs1.getDocuments().get(0).get("days per week").toString());
-                            double before = hoursRate * hoursPerDay * daysPerWeek * 4;
-                            DecimalFormat df = new DecimalFormat("#.##");
-                            double FinEstimateIncome = Double.parseDouble(df.format(before));
-
-                            double total = 0.0;
-                            for (int i = 0; i < qs2.size(); i++) {
-                                double d = Double.parseDouble(qs2.getDocuments().get(i).get("amount").toString());
-                                total += d;
-                            }
-
-                            double diff = FinEstimateIncome - total;
-                            double difference = Double.parseDouble(df.format(diff));
-                            textExpenseTotal.setText("Total expenses: " + total + "€");
-                            textTotalEstimate.setText("Estimated balance: " + difference + "€");
-                        }
-                    } else {
-                        Exception e = querySnapshot1.getException();
-
-                        if (e == null) {
-                            e = querySnapshot2.getException();
-                        }
-                        e.printStackTrace();
-                    }
-                });
-            });
+        });
 
 
         //Query for daily work
         jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(querySnapshot1 -> {
-                workDays.get().addOnCompleteListener(querySnapshot3 ->{
+            workDays.get().addOnCompleteListener(querySnapshot3 -> {
                 if (querySnapshot1.isSuccessful() && querySnapshot3.isSuccessful()) {
                     QuerySnapshot qs1 = querySnapshot1.getResult();
                     QuerySnapshot qs3 = querySnapshot3.getResult();
-                    if (qs1 != null && qs1.getDocuments().size() > 0 && qs3 !=null && qs3.getDocuments().size() >0) {
+                    if (qs1 != null && qs1.getDocuments().size() > 0 && qs3 != null && qs3.getDocuments().size() > 0) {
                         double hoursRate = Double.parseDouble(qs1.getDocuments().get(0).get("hourly rate").toString());
 
 
@@ -149,11 +151,11 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
                             numDays++;
                         }
                         DecimalFormat df = new DecimalFormat("#.##");
-                        double bfActualIncome = numHours*hoursRate;
+                        double bfActualIncome = numHours * hoursRate;
                         double actualIncome = Double.parseDouble(df.format(bfActualIncome));
                         textDaysWorked.setText("Days worked: " + numDays);
                         textHoursWorked.setText("Hours worked: " + numHours + "h");
-                        textMoneyMade.setText("Income: "+ actualIncome + "€");
+                        textMoneyMade.setText("Income: " + actualIncome + "€");
                     }
                 } else {
                     Exception e = querySnapshot1.getException();
@@ -163,13 +165,8 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
                     }
                     e.printStackTrace();
                 }
-                });
             });
-
-
-
-       
-
+        });
 
 
         addHoursButton.setOnClickListener(v -> showAddHoursDialog());
