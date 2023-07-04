@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
 
         // Month DB sender
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+        SimpleDateFormat monthFormat = new SimpleDateFormat("M");
         String currentMonth = monthFormat.format(calendar.getTime());
 
         CollectionReference workDays = db.collection("users").document(user).collection(currentMonth);
