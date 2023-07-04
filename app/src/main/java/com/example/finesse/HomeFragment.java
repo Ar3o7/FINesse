@@ -23,8 +23,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class HomeFragment extends Fragment implements AddHoursDialogActivity.AddHoursDialogListener {
 
@@ -59,12 +62,18 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
 
         CollectionReference jobs = db.collection("users").document(user).collection("jobs");
         CollectionReference expenses = db.collection("users").document(user).collection("expenses");
-        CollectionReference workDays = db.collection("users").document(user).collection("6");
+        CollectionReference workDays = db.collection("users").document(user).collection("currentMonth");
 
         // Update the textNewTitle TextView with the current date
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String currentDate = dateFormat.format(new Date());
         textNewTitle.setText("Current Date: " + currentDate);
+
+        // Month DB sender
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+        String currentMonth = monthFormat.format(calendar.getTime());
+
 
         jobs.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(querySnapshot1 -> {
                 if (querySnapshot1.isSuccessful()) {
@@ -76,8 +85,6 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
                         double before = hoursRate * hoursPerDay * daysPerWeek * 4;
                         DecimalFormat df = new DecimalFormat("#.##");
                         double FinEstimateIncome = Double.parseDouble(df.format(before));
-
-
 
                         textAmountMade.setText("Estimated income: " + FinEstimateIncome +"€");
                     }
