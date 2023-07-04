@@ -51,7 +51,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/textNewTitle"
                 android:layout_marginTop="30dp"
-                android:text=""
+                android:text="No work days added"
                 android:textColor="@color/finSecondary"
                 android:textSize="20sp"/>
 
@@ -102,29 +102,19 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/textest"
                 android:layout_marginTop="10dp"
-                android:text=""
+                android:text="No job added"
                 android:textColor="@color/finSecondary"
                 android:textSize="20sp"/>
 
-            <TextView
-                android:id="@+id/textEstimateIncome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/textAmountMade"
-                android:layout_marginTop="10dp"
-                android:text=""
-                android:textColor="@color/finSecondary"
-                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/textExpenseTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/textEstimateIncome"
+                android:layout_below="@id/textAmountMade"
                 android:layout_marginTop="10dp"
-                android:text=""
+                android:text="No expenses added"
                 android:textColor="@color/finSecondary"
                 android:textSize="20sp"/>
 

@@ -81,7 +81,7 @@ public class JobsFragment extends Fragment {
                 textDate_end.setText("End Date: " + dateEnd);
 
             }else {
-                textJobName.setText("No job yet");
+                textD_week.setText("No job yet");
             }
         });
     }

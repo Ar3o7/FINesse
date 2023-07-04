@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
-                android:text="Name:"
+                android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp" />
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="80dp"
-                android:text="Hourly rate: "
+                android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="120dp"
-                android:text="Hours per day: "
+                android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="160dp"
-                android:text="Days per week: "
+                android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="200dp"
-                android:text="bonus: "
+                android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="240dp"
-                android:text="Date started: "
+                android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="280dp"
-                android:text="date to end: "
+                android:text=""
                 android:textColor="@color/finSecondary"
                 android:textSize="18sp"/>
 
