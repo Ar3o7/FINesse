@@ -1,6 +1,6 @@
 package com.example.finesse;
 
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,22 +18,23 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-
 public class JobsFragment extends Fragment {
 
+    private static final int ADD_JOB_REQUEST_CODE = 1;
+
     private Button addJobButton;
-    TextView textJobName,textH_rate,textH_day,textD_week,textBonus,textDate_start,textDate_end;
+    TextView textJobName, textH_rate, textH_day, textD_week, textBonus, textDate_start, textDate_end;
 
-    String name, dateStart, hoursRate, dateEnd, bonus, hoursPerDay, daysPerWeek ;
+    String name, dateStart, hoursRate, dateEnd, bonus, hoursPerDay, daysPerWeek;
 
-    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_jobs, container, false);
-        Button addJobButton = view.findViewById(R.id.ButtonAddJob);
+        addJobButton = view.findViewById(R.id.ButtonAddJob);
 
         textJobName = view.findViewById(R.id.textJobName);
         textH_rate = view.findViewById(R.id.textH_rate);
@@ -45,20 +46,16 @@ public class JobsFragment extends Fragment {
 
         addJobs();
 
-        //TODO: treba sredit da se refresha ;-;
-
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddJobActivity.class);
-                startActivity(intent);
-                addJobs();
+                startActivityForResult(intent, ADD_JOB_REQUEST_CODE);
             }
         });
-        addJobs();
-        return view;
 
-        }
+        return view;
+    }
 
     private void addJobs() {
         String user = currentFirebaseUser.getUid();
@@ -79,13 +76,17 @@ public class JobsFragment extends Fragment {
                 textBonus.setText("Bonus: " + bonus);
                 textDate_start.setText("Date started: " + dateStart);
                 textDate_end.setText("End Date: " + dateEnd);
-
-            }else {
+            } else {
                 textD_week.setText("No job yet");
             }
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_JOB_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            addJobs();
+        }
+    }
 }
-
-

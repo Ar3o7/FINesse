@@ -1,9 +1,10 @@
 package com.example.finesse;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,8 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -38,7 +37,7 @@ public class AddJobActivity extends AppCompatActivity {
     private Button jobDateStartEditText;
     private TextView jobDateEndEditText;
     private EditText jobBonusEditText;
-    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -50,8 +49,8 @@ public class AddJobActivity extends AppCompatActivity {
         jobHoursRateEditText = findViewById(R.id.job_hrate);
         jobHoursDayEditText = findViewById(R.id.job_hday);
         jobDayWeekEditText = findViewById(R.id.job_dweek);
-        jobDateStartEditText = (Button) findViewById(R.id.job_dateStart);
-        jobDateEndEditText = (TextView) findViewById(R.id.job_dateEnd);
+        jobDateStartEditText = findViewById(R.id.job_dateStart);
+        jobDateEndEditText = findViewById(R.id.job_dateEnd);
         jobBonusEditText = findViewById(R.id.job_bonus);
 
         final Calendar calendar = Calendar.getInstance();
@@ -61,13 +60,13 @@ public class AddJobActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int year = calendar.get(Calendar.YEAR);
-                int month  = calendar.get(Calendar.MONTH);
+                int month = calendar.get(Calendar.MONTH);
                 int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(AddJobActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month , int dayOfMonth) {
-                        calendar.set(year,month,dayOfMonth);
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(year, month, dayOfMonth);
                         String dateStart = dateFormat.format(calendar.getTime());
                         jobDateStartEditText.setText(dateStart);
 
@@ -75,7 +74,7 @@ public class AddJobActivity extends AppCompatActivity {
                         String dateEnd = dateFormat.format(calendar.getTime());
                         jobDateEndEditText.setText(dateEnd);
                     }
-                },year,month,dayOfMonth);
+                }, year, month, dayOfMonth);
                 datePickerDialog.show();
             }
         });
@@ -87,7 +86,6 @@ public class AddJobActivity extends AppCompatActivity {
                 addJob();
             }
         });
-
     }
 
     public void addJob() {
@@ -100,29 +98,33 @@ public class AddJobActivity extends AppCompatActivity {
         String bonus = jobBonusEditText.getText().toString();
         String user = currentFirebaseUser.getUid();
 
-        if (Integer.parseInt(daysPerWeek) > 7) {
-            Toast.makeText(this, "Please enter a valid number of days per week", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        CollectionReference jobs = db.collection("users").document(user).collection("jobs");
+        Map<String, Object> job = new HashMap<>();
+        job.put("job name", name);
+        job.put("hourly rate", hoursDayRate);
+        job.put("hours per day", hoursPerDay);
+        job.put("days per week", daysPerWeek);
+        job.put("date start", dateStart);
+        job.put("date end", dateEnd);
+        job.put("bonus", bonus);
+        job.put("timestamp", FieldValue.serverTimestamp());
 
-        if (!name.isEmpty() && !hoursDayRate.isEmpty() && !hoursPerDay.isEmpty() && !daysPerWeek.isEmpty() && !dateStart.isEmpty() && !dateEnd.isEmpty()) {
-
-            Map<String, Object> job = new HashMap<>();
-            job.put("job name", name);
-            job.put("hourly rate", hoursDayRate);
-            job.put("hours per day", hoursPerDay);
-            job.put("days per week", daysPerWeek);
-            job.put("date start", dateStart);
-            job.put("date end", dateEnd);
-            job.put("bonus", bonus);
-            job.put("timestamp", FieldValue.serverTimestamp());
-
-            CollectionReference jobs = db.collection("users").document(user).collection("jobs");
-            jobs.document(name).set(job);
-
-            finish();
-        } else {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-        }
+        jobs.document(name)
+                .set(job)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(AddJobActivity.this, "Job added successfully!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(AddJobActivity.this, "Failed to add job.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
