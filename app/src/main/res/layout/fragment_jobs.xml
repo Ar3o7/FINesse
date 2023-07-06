@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".JobsFragment"
+    android:background="@drawable/background_image"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 

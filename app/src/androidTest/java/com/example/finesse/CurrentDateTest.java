@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 
-public class HomeFragmentTest {
+public class CurrentDateTest {
 
     @Test
     public void testCurrentDate() {
