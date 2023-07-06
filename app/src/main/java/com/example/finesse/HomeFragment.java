@@ -31,12 +31,20 @@ import java.time.format.DateTimeFormatter;
 
 public class HomeFragment extends Fragment implements AddHoursDialogActivity.AddHoursDialogListener {
 
-    private TextView textEstimateIncome, textExpenseTotal, textNewTitle, textDaysWorked,textHoursWorked,textMoneyMade,textTotalEstimate, textAmountMade;
+    private TextView textEstimateIncome;
+    public TextView textExpenseTotal;
+    public TextView textNewTitle;
+    public TextView textDaysWorked;
+    public TextView textHoursWorked;
+    public TextView textMoneyMade;
+    public TextView textTotalEstimate;
+    public TextView textAmountMade;
     private FirebaseUser currentFirebaseUser;
     private FirebaseFirestore db;
     private Integer hoursPerDay,daysPerWeek;
     private String name,dateStart,dateEnd;
-    private Button addHoursButton;
+    public Button addHoursButton;
+    public SimpleDateFormat dateFormat;
     public Double hoursRate, bonus, FinEstimateIncome, total, est, income;
 
     public Integer numHours, numDays;
@@ -65,7 +73,7 @@ public class HomeFragment extends Fragment implements AddHoursDialogActivity.Add
 
 
         // Update the textNewTitle TextView with the current date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String currentDate = dateFormat.format(new Date());
         textNewTitle.setText("Current Date: " + currentDate);
 
